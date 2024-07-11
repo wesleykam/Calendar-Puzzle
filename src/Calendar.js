@@ -89,21 +89,19 @@ const Calendar = () => {
     const [month, setMonth] = useState(0);
     const [day, setDay] = useState(0);
 
-
-    const BLANK_GRID = [
-        [0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0],
-    ]    
-
     // Block out the selected month and days for shapes to avoid
     const modify_date_position = (month, day) => {
 
-        const blank = [...BLANK_GRID]
+        const BLANK_GRID = [
+            [0, 0, 0, 0, 0, 0, -1],
+            [0, 0, 0, 0, 0, 0, -1],
+            [0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, -1, -1, -1, -1],
+        ]    
+    
 
         const month_row = Math.floor(month / 6);
         const month_col = month % 6;
@@ -112,10 +110,10 @@ const Calendar = () => {
         const date_col = (day) % 7;
 
         // Set cells to 9 which is an unset Shape (no background)
-        blank[month_row][month_col] = 9;
-        blank[date_row][date_col] = 9
+        BLANK_GRID[month_row][month_col] = 9;
+        BLANK_GRID[date_row][date_col] = 9
 
-        return blank
+        return BLANK_GRID
     }
 
     const month_day_calendar = modify_date_position(month, day);
