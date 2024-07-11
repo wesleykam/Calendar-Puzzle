@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react'
 
+import Dropdown from './components/Dropdown'
+
 const CALENDAR_DATA = [
     ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
     ['Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
@@ -10,15 +12,7 @@ const CALENDAR_DATA = [
     [29, 30, 31]
 ]
 
-const BLANK_GRID = [
-    [0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0],
-]
+
 
 // const NOV_20_GRID = [
 //     [0, 0, 0, 0, 0, 0],
@@ -55,27 +49,72 @@ const MONTH_MAP = new Map([
     ['Dec', 11]
 ])
 
+const DAY_MAP = new Map([
+    [1, 0],
+    [2, 1],
+    [3, 2],
+    [4, 3],
+    [5, 4],
+    [6, 5],
+    [7, 6],
+    [8, 7],
+    [9, 8],
+    [10, 9],
+    [11, 10],
+    [12, 11],
+    [13, 12],
+    [14, 13],
+    [15, 14],
+    [16, 15],
+    [17, 16],
+    [18, 17],
+    [19, 18],
+    [20, 19],
+    [21, 20],
+    [22, 21],
+    [23, 22],
+    [24, 23],
+    [25, 24],
+    [26, 25],
+    [27, 26],
+    [28, 27],
+    [29, 28],
+    [30, 29],
+    [31, 30]
+])
+
 const Calendar = () => {
     // use memo to calcualte solutions
 
-    const [month, setMonth] = useState('Jan');
-    const [day, setDay] = useState(1);
+    const [month, setMonth] = useState(0);
+    const [day, setDay] = useState(0);
+
+
+    const BLANK_GRID = [
+        [0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0],
+    ]    
 
     // Block out the selected month and days for shapes to avoid
     const modify_date_position = (month, day) => {
-        const blank = BLANK_GRID.slice();
 
-        console.log(blank)
-        const month_index = MONTH_MAP.get(month);
-        const month_row = Math.floor(month_index / 6);
-        const month_col = month_index % 6;
+        const blank = [...BLANK_GRID]
 
-        const date_row = Math.floor((day - 1) / 7) + 2;
-        const date_col = (day - 1) % 7;
+        const month_row = Math.floor(month / 6);
+        const month_col = month % 6;
+
+        const date_row = Math.floor((day) / 7) + 2;
+        const date_col = (day) % 7;
 
         // Set cells to 9 which is an unset Shape (no background)
         blank[month_row][month_col] = 9;
         blank[date_row][date_col] = 9
+
         return blank
     }
 
@@ -100,22 +139,27 @@ const Calendar = () => {
                         })
                     }
                 </div>
-            </div>
-            <div className='shape-grid-container'>
-                <div className='shape-grid'>
-                    {
-                        month_day_calendar.map((row, row_index) => {
-                            return <div key={'shapes-row-' + row_index} className='row'>
-                                {
-                                    row.map((cell_val, col_index) => {
-                                        return <div key={'shapes-col-' + col_index} className={'cell shape-' + cell_val} />
-                                    })
-                                }
-                            </div>
-                        })
-                    }
+                <div className='shape-grid-container'>
+                    <div className='shape-grid'>
+                        {
+                            month_day_calendar.map((row, row_index) => {
+                                return <div key={'shapes-row-' + row_index} className='row'>
+                                    {
+                                        row.map((cell_val, col_index) => {
+                                            return <div key={'shapes-col-' + col_index} className={'cell shape-' + cell_val} />
+                                        })
+                                    }
+                                </div>
+                            })
+                        }
+                    </div>
                 </div>
-            </div> 
+            </div>
+
+            <div className='month-day-selection'>
+                <Dropdown values={MONTH_MAP} setState={setMonth} />
+                <Dropdown values={DAY_MAP} setState={setDay} />
+            </div>
         </>
     )
 }
