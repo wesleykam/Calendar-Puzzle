@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 const CALENDAR_DATA = [
     ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
@@ -10,6 +10,26 @@ const CALENDAR_DATA = [
     [29, 30, 31]
 ]
 
+const BLANK_GRID = [
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0],
+]
+
+// const NOV_20_GRID = [
+//     [0, 0, 0, 0, 0, 0],
+//     [0, 0, 0, 0, 9, 0],
+//     [0, 0, 0, 0, 0, 0, 0],
+//     [0, 0, 0, 0, 0, 0, 0],
+//     [0, 0, 0, 0, 0, 9, 0],
+//     [0, 0, 0, 0, 0, 0, 0],
+//     [0, 0, 0],
+// ]
+
 const HARDCODED_SHAPE_GRID = [
     [1, 2, 2, 2, 3, 3],
     [1, 1, 6, 2, 0, 3],
@@ -20,18 +40,59 @@ const HARDCODED_SHAPE_GRID = [
     [8, 8, 8]
 ]
 
-function Calendar() {
+const MONTH_MAP = new Map([
+    ['Jan', 0],
+    ['Feb', 1],
+    ['Mar', 2],
+    ['Apr', 3],
+    ['May', 4],
+    ['Jun', 5],
+    ['Jul', 6],
+    ['Aug', 7],
+    ['Sep', 8],
+    ['Oct', 9],
+    ['Nov', 10],
+    ['Dec', 11]
+])
+
+const Calendar = () => {
+    // use memo to calcualte solutions
+
+    const [month, setMonth] = useState('Jan');
+    const [day, setDay] = useState(1);
+
+    // Block out the selected month and days for shapes to avoid
+    const modify_date_position = (month, day) => {
+        const blank = BLANK_GRID.slice();
+
+        console.log(blank)
+        const month_index = MONTH_MAP.get(month);
+        const month_row = Math.floor(month_index / 6);
+        const month_col = month_index % 6;
+
+        const date_row = Math.floor((day - 1) / 7) + 2;
+        const date_col = (day - 1) % 7;
+
+        // Set cells to 9 which is an unset Shape (no background)
+        blank[month_row][month_col] = 9;
+        blank[date_row][date_col] = 9
+        return blank
+    }
+
+    const month_day_calendar = modify_date_position(month, day);
+
+
     return (
         <>
             <div className='calendar-container'>
                 <div className='calendar'>
                     {
-                        CALENDAR_DATA.map((row, rowIndex) => {
-                            return <div key={'calendar-row-' + rowIndex} className='row'>
+                        CALENDAR_DATA.map((row, row_index) => {
+                            return <div key={'calendar-row-' + row_index} className='row'>
                                 {
-                                    row.map((cellValue, colIndex) => {
-                                        return <div key={'calendar-col-' + colIndex} className='cell calendar-cell'>
-                                            {cellValue}
+                                    row.map((cell_val, col_index) => {
+                                        return <div key={'calendar-col-' + col_index} className='cell calendar-cell'>
+                                            {cell_val}
                                         </div>
                                     })
                                 }
@@ -43,18 +104,18 @@ function Calendar() {
             <div className='shape-grid-container'>
                 <div className='shape-grid'>
                     {
-                        HARDCODED_SHAPE_GRID.map((row, rowIndex) => {
-                            return <div key={'shapes-row-' + rowIndex} className='row'>
+                        month_day_calendar.map((row, row_index) => {
+                            return <div key={'shapes-row-' + row_index} className='row'>
                                 {
-                                    row.map((cell, colIndex) => {
-                                        return <div key={'shapes-col-' + colIndex} className={'cell shape-' + cell} />
+                                    row.map((cell_val, col_index) => {
+                                        return <div key={'shapes-col-' + col_index} className={'cell shape-' + cell_val} />
                                     })
                                 }
                             </div>
                         })
                     }
                 </div>
-            </div>
+            </div> 
         </>
     )
 }
