@@ -8,7 +8,15 @@
   justify-content: center;
 }
 
-.calendar-container {
+.cell {
+  height: 70px;
+  width: 70px;
+  box-sizing: border-box;
+}
+
+
+/* #region CALENDAR */
+.calendar {
   position: relative;
 
   display: flex;
@@ -20,13 +28,54 @@
   display: flex;
 }
 
-.cell {
-  width: 70px;
-  height: 70px;
+.calendar-cell {
   border: solid 1px white;
-  
+
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
+/* #endregion CALENDAR */
+
+/* #region SHAPE-GRID */
+.shape-grid-container {
+  position: absolute;
+}
+
+/* #region SHAPES */
+.shape-1 {
+  background-color: rgb(255, 219, 153);
+}
+
+.shape-2 {
+  background-color: rgb(148, 247, 171);
+}
+
+.shape-3 {
+  background-color: rgb(211, 163, 255);
+}
+
+.shape-4 {
+  background-color: rgb(255, 162, 216);
+}
+
+.shape-5 {
+  background-color: rgb(255, 144, 144);
+}
+
+.shape-6 {
+  background-color: rgb(145, 220, 255);
+}
+
+.shape-7 {
+  background-color: rgb(255, 252, 168);
+}
+
+.shape-8 {
+  background-color: rgb(113, 108, 255);
+}
+
+/* #endregion SHAPES */
+
+/* #endregion SHAPE-GRID */
