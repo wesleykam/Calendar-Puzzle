@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 
 import Dropdown from './components/Dropdown'
+import {findSolutions, firstShape_grid, secondShape_grid, findNextBlank, SHAPES} from './Algorithm'
 
 const CALENDAR_DATA = [
     ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
@@ -11,18 +12,6 @@ const CALENDAR_DATA = [
     [22, 23, 24, 25, 26, 27, 28],
     [29, 30, 31]
 ]
-
-
-
-// const NOV_20_GRID = [
-//     [0, 0, 0, 0, 0, 0],
-//     [0, 0, 0, 0, 9, 0],
-//     [0, 0, 0, 0, 0, 0, 0],
-//     [0, 0, 0, 0, 0, 0, 0],
-//     [0, 0, 0, 0, 0, 9, 0],
-//     [0, 0, 0, 0, 0, 0, 0],
-//     [0, 0, 0],
-// ]
 
 const HARDCODED_SHAPE_GRID = [
     [1, 2, 2, 2, 3, 3],
@@ -88,6 +77,9 @@ const Calendar = () => {
 
     const [month, setMonth] = useState(0);
     const [day, setDay] = useState(0);
+    const [solutions, setSolutions] = useState([])
+
+    console.log(solutions)
 
     // Block out the selected month and days for shapes to avoid
     const modify_date_position = (month, day) => {
@@ -117,6 +109,20 @@ const Calendar = () => {
     }
 
     const month_day_calendar = modify_date_position(month, day);
+    useEffect(() => {
+
+        const new_solutions = []
+
+        // console.log(firstShape_grid)
+        // console.log(SHAPES)
+        // console.log(month_day_calendar)
+        const [row_start, col_start] = findNextBlank(month_day_calendar)
+        findSolutions(new_solutions, month_day_calendar, SHAPES, row_start, col_start)
+        // findSolutions(solutions, firstShape_grid, SHAPES, 0, 1)
+        // findSolutions(solutions, secondShape_grid, SHAPES, 0, 4)
+        // console.log(new_solutions)
+        setSolutions([...new_solutions])
+    },[month, day])
 
 
     return (
