@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 
 import Dropdown from './components/Dropdown'
-import {findSolutions, firstShape_grid, secondShape_grid, findNextBlank, SHAPES} from './Algorithm'
+import { findSolutions, firstShape_grid, secondShape_grid, thirdShape_grid, findNextBlank, SHAPES } from './Algorithm'
 
 const CALENDAR_DATA = [
     ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
@@ -77,9 +77,9 @@ const Calendar = () => {
 
     const [month, setMonth] = useState(0);
     const [day, setDay] = useState(0);
-    const [solutions, setSolutions] = useState([])
+    const [solutionIndex, setSolutionIndex] = useState(0);
+    // const [solutions, setSolutions] = useState([])
 
-    console.log(solutions)
 
     // Block out the selected month and days for shapes to avoid
     const modify_date_position = (month, day) => {
@@ -92,8 +92,8 @@ const Calendar = () => {
             [0, 0, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 0, 0, 0],
             [0, 0, 0, -1, -1, -1, -1],
-        ]    
-    
+        ]
+
 
         const month_row = Math.floor(month / 6);
         const month_col = month % 6;
@@ -109,20 +109,46 @@ const Calendar = () => {
     }
 
     const month_day_calendar = modify_date_position(month, day);
-    useEffect(() => {
 
+    const solutions = useMemo(() => {
         const new_solutions = []
 
-        // console.log(firstShape_grid)
-        // console.log(SHAPES)
-        // console.log(month_day_calendar)
         const [row_start, col_start] = findNextBlank(month_day_calendar)
         findSolutions(new_solutions, month_day_calendar, SHAPES, row_start, col_start)
-        // findSolutions(solutions, firstShape_grid, SHAPES, 0, 1)
-        // findSolutions(solutions, secondShape_grid, SHAPES, 0, 4)
-        // console.log(new_solutions)
-        setSolutions([...new_solutions])
-    },[month, day])
+
+        console.log(new_solutions)
+
+        return new_solutions
+    }, [month, day]);
+
+    const solutionMap = useMemo(() => {
+        const solMap = new Map();
+
+        for(var i=0; i<solutions.length; i++) {
+            solMap.set(i+1, i);
+        }
+
+        return solMap;
+
+    }, [month, day])
+
+
+
+    // useEffect(() => {
+
+    //     const new_solutions = []
+
+    //     // console.log(firstShape_grid)
+    //     // console.log(SHAPES)
+    //     // console.log(month_day_calendar)
+    //     const [row_start, col_start] = findNextBlank(month_day_calendar)
+    //     findSolutions(new_solutions, month_day_calendar, SHAPES, row_start, col_start)
+    //     // findSolutions(solutions, firstShape_grid, SHAPES, 0, 1)
+    //     // findSolutions(solutions, secondShape_grid, SHAPES, 0, 4)
+    //     // findSolutions(solutions, thirdShape_grid, SHAPES, 1, 2)
+    //     console.log(new_solutions)
+    //     setSolutions([...new_solutions])
+    // },[month, day])
 
 
     return (
@@ -146,11 +172,11 @@ const Calendar = () => {
                 <div className='shape-grid-container'>
                     <div className='shape-grid'>
                         {
-                            month_day_calendar.map((row, row_index) => {
+                            solutions[solutionIndex].map((row, row_index) => {
                                 return <div key={'shapes-row-' + row_index} className='row'>
                                     {
                                         row.map((cell_val, col_index) => {
-                                            return <div key={'shapes-col-' + col_index} className={'cell shape-' + cell_val} />
+                                            return <div key={'shapes-row-col-'+row_index+'-'+col_index} className={'cell shape shape-' + cell_val} />
                                         })
                                     }
                                 </div>
@@ -158,6 +184,10 @@ const Calendar = () => {
                         }
                     </div>
                 </div>
+            </div>
+
+            <div className='solution-selection'>
+                <Dropdown values={solutionMap} setState={setSolutionIndex} />
             </div>
 
             <div className='month-day-selection'>
