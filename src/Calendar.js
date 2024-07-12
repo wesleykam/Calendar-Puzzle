@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react'
 
 import Dropdown from './components/Dropdown'
-import { findSolutions, firstShape_grid, secondShape_grid, thirdShape_grid, findNextBlank, SHAPES } from './Algorithm'
+import { findSolutions, findNextBlank, SHAPES } from './Algorithm'
 
 const CALENDAR_DATA = [
     ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
@@ -11,16 +11,6 @@ const CALENDAR_DATA = [
     [15, 16, 17, 18, 19, 20, 21],
     [22, 23, 24, 25, 26, 27, 28],
     [29, 30, 31]
-]
-
-const HARDCODED_SHAPE_GRID = [
-    [1, 2, 2, 2, 3, 3],
-    [1, 1, 6, 2, 0, 3],
-    [1, 1, 6, 2, 3, 3, 4],
-    [7, 7, 6, 5, 5, 4, 4],
-    [7, 7, 6, 6, 5, 0, 4],
-    [7, 7, 8, 8, 5, 5, 4],
-    [8, 8, 8]
 ]
 
 const MONTH_MAP = new Map([
@@ -73,12 +63,9 @@ const DAY_MAP = new Map([
 ])
 
 const Calendar = () => {
-    // use memo to calcualte solutions
-
     const [month, setMonth] = useState(0);
     const [day, setDay] = useState(0);
     const [solutionIndex, setSolutionIndex] = useState(0);
-    // const [solutions, setSolutions] = useState([])
 
 
     // Block out the selected month and days for shapes to avoid
@@ -93,7 +80,6 @@ const Calendar = () => {
             [0, 0, 0, 0, 0, 0, 0],
             [0, 0, 0, -1, -1, -1, -1],
         ]
-
 
         const month_row = Math.floor(month / 6);
         const month_col = month % 6;
@@ -110,19 +96,19 @@ const Calendar = () => {
 
     const month_day_calendar = modify_date_position(month, day);
 
+    // Generate solutions only when month and day change
     const solutions = useMemo(() => {
         const new_solutions = []
 
         const [row_start, col_start] = findNextBlank(month_day_calendar)
         findSolutions(new_solutions, month_day_calendar, SHAPES, row_start, col_start)
-        
+
         return new_solutions
-    }, [month, day]);
+    }, [month_day_calendar]);
 
+    // Generate new solution map when day and month change (new solutions are generated)
     const solutionMap = useMemo(() => {
-
-        document.getElementById('selected-solution').value = 0;
-
+        // Create a map of solutions for the drop-down
         const solMap = new Map();
 
         for(var i=0; i<solutions.length; i++) {
@@ -131,26 +117,13 @@ const Calendar = () => {
 
         return solMap;
 
-    }, [month, day])
+    }, [solutions.length])
 
-
-
-    // useEffect(() => {
-
-    //     const new_solutions = []
-
-    //     // console.log(firstShape_grid)
-    //     // console.log(SHAPES)
-    //     // console.log(month_day_calendar)
-    //     const [row_start, col_start] = findNextBlank(month_day_calendar)
-    //     findSolutions(new_solutions, month_day_calendar, SHAPES, row_start, col_start)
-    //     // findSolutions(solutions, firstShape_grid, SHAPES, 0, 1)
-    //     // findSolutions(solutions, secondShape_grid, SHAPES, 0, 4)
-    //     // findSolutions(solutions, thirdShape_grid, SHAPES, 1, 2)
-    //     console.log(new_solutions)
-    //     setSolutions([...new_solutions])
-    // },[month, day])
-
+    useEffect(() => {
+        // Reset value in solution index drop-down
+        document.getElementById('selected-solution').value = 0;
+        // console.log(document.getElementById('selected-solution'))
+    }, [day, month])
 
     return (
         <>

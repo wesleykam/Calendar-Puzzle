@@ -1,23 +1,4 @@
-function rotateN90(a) {
-
-    var temp = new Array(a[0].length); // number of columns
-    var i = 0;
-
-    for (i = 0; i < temp.length; i++) {
-        temp[i] = [];
-    }
-
-    for (i = 0; i < a.length; i++) {
-
-        for (let j = 0; j < a[0].length; j++) {
-
-            temp[j][i] = a[i][a[i].length - 1 - j];
-        }
-    }
-
-    return temp;
-}
-
+// Define shapes
 const SHAPES = [
     [
         [1, 0],
@@ -64,39 +45,9 @@ const SHAPES = [
     ]
 ]
 
-const firstShape_grid = [
-    [1, 0, 0, 0, 0, 0, -1],
-    [1, 1, 0, 0, 9, 0, -1],
-    [1, 1, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 9, 0],
-    [0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, -1, -1, -1, -1],
-]
-
-const secondShape_grid = [
-    [1, 2, 2, 2, 0, 0, -1],
-    [1, 1, 0, 2, 9, 0, -1],
-    [1, 1, 0, 2, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 9, 0],
-    [0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, -1, -1, -1, -1],
-]
-
-const thirdShape_grid = [
-    [1, 2, 2, 2, 3, 3, -1],
-    [1, 1, 0, 2, 9, 3, -1],
-    [1, 1, 0, 2, 3, 3, 0],
-    [0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 9, 0],
-    [0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, -1, -1, -1, -1],
-]
-
-
+// check if the shape fits into the grid
 const fits = (grid, shape, row_start, col_start) => {
-    // check if shape fits in the grid
+    // check if shape doesn't extend outside the border
     if (row_start + shape.length > grid.length || col_start + shape[0].length > grid[0].length) {
         return false
     }
@@ -113,6 +64,7 @@ const fits = (grid, shape, row_start, col_start) => {
     return true
 }
 
+// insert the shape into the grid
 const add_shape = (grid, shape, row_start, col_start) => {
     for (let i = 0; i < shape.length; i++) {
         for (let j = 0; j < shape[0].length; j++) {
@@ -123,6 +75,7 @@ const add_shape = (grid, shape, row_start, col_start) => {
     }
 }
 
+// find the next 0 in grid
 const findNextBlank = (grid) => {
     for (let i = 0; i < grid.length; i++) {
         for (let j = 0; j < grid[0].length; j++) {
@@ -132,29 +85,47 @@ const findNextBlank = (grid) => {
         }
     }
 
+    // no more 0's in grid
     return [-1, -1]
 }
 
+// rotate the shape by 90 degrees
+function rotate90(Shape) {
+
+    var temp = new Array(Shape[0].length); // number of columns
+    var i = 0;
+
+    for (i = 0; i < temp.length; i++) {
+        temp[i] = [];
+    }
+
+    for (i = 0; i < Shape.length; i++) {
+
+        for (let j = 0; j < Shape[0].length; j++) {
+
+            temp[j][i] = Shape[i][Shape[i].length - 1 - j];
+        }
+    }
+
+    return temp;
+}
+
+// Populate "solutions" with all possible solutions recursively
 const findSolutions = (solutions, grid, shapes, row_start, col_start) => {
-
-
-
-    // base case
+    // base case if shapes are all exhausted
     if (shapes.length <= 0) {
         solutions.push(grid)
         return
     }
 
+    // base case if iterating through the last row
     if (row_start >= 6) {
         return
     }
 
     // loop through all possible starting shapes including rotations
     shapes.map((shape, index) => {
-
-        // check if shape fits in the grid
-        // check if shape overlaps with other shapes
-
+        // test shape reflections
         for (let j = 0; j < 2; j++) {
             // test all the rotations of the shape
             for (let i = 0; i < 4; i++) {
@@ -175,7 +146,7 @@ const findSolutions = (solutions, grid, shapes, row_start, col_start) => {
 
                 // Skip rotations for the first shape if the first cell is 0
                 if (row_start === 0 && col_start === 0 && shape[0][0] === 0) {
-                    shape = rotateN90(shape)
+                    shape = rotate90(shape)
                     continue
                 }
 
@@ -212,18 +183,16 @@ const findSolutions = (solutions, grid, shapes, row_start, col_start) => {
                 }
 
                 // rotate shape
-                shape = rotateN90(shape)
+                shape = rotate90(shape)
             }
             // reflect shape
             shape.map(function (arr) { return arr.reverse(); });
         }
+        return null
     })
 }
 
 export {
-    firstShape_grid,
-    secondShape_grid,
-    thirdShape_grid,
     findNextBlank,
     findSolutions,
     SHAPES
