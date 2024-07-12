@@ -4,7 +4,10 @@ import Calendar from './Calendar';
 function App() {
   return (
     <div className="App">
-      <Calendar />
+      <div className='container'>
+        <h1>Calendar Puzzle</h1>
+        <Calendar />
+      </div>
     </div>
   );
 }

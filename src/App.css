@@ -3,19 +3,35 @@
   background-color: black;
   color: white;
 
+  font-size: 18px;
+}
+
+.container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
 
-  font-size: 18px;
-  gap: 40px;
+  gap: 20px;
+
+  position: relative;
+  top: 30px;
+}
+
+h2 {
+  margin: 0;
 }
 
 .cell {
   height: 70px;
   width: 70px;
   box-sizing: border-box;
+}
+
+.calendar-game {
+  display: flex;
+  flex-direction: row-reverse;
+  gap: 50px;
 }
 
 .calendar-container {
@@ -25,7 +41,7 @@
 
 
 /* #region CALENDAR */
-.calendar {
+.calendar-grid {
   position: absolute;
 
   display: flex;
@@ -106,6 +122,23 @@
 }
 
 
+.controls {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: 10px;
+
+  border: solid 2px white;
+  border-radius: 5px;
+  padding: 25px;
+
+  height: fit-content;
+}
+
+.controls div {
+  margin: 3px 0;
+}
+
 /* #endregion SOLUTION-SELECTION */
 
 
@@ -113,7 +146,13 @@
 
 .month-day-selection {
   display: flex;
+  flex-direction: column;
+}
+
+.month-day-dropdowns {
+  display: flex;
   flex-direction: row;
+  gap: 5px;
 }
 
 .dropdown select {
@@ -122,4 +161,3 @@
 }
 
 /* #endregion MONTH-DAY-SELECTION */
-

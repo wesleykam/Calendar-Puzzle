@@ -111,8 +111,8 @@ const Calendar = () => {
         // Create a map of solutions for the drop-down
         const solMap = new Map();
 
-        for(var i=0; i<solutions.length; i++) {
-            solMap.set(i+1, i);
+        for (var i = 0; i < solutions.length; i++) {
+            solMap.set(i + 1, i);
         }
 
         return solMap;
@@ -126,9 +126,9 @@ const Calendar = () => {
     }, [day, month])
 
     return (
-        <>
+        <div className='calendar-game'>
             <div className='calendar-container'>
-                <div className='calendar'>
+                <div className='calendar-grid'>
                     {
                         CALENDAR_DATA.map((row, row_index) => {
                             return <div key={'calendar-row-' + row_index} className='row'>
@@ -150,7 +150,7 @@ const Calendar = () => {
                                 return <div key={'shapes-row-' + row_index} className='row'>
                                     {
                                         row.map((cell_val, col_index) => {
-                                            return <div key={'shapes-row-col-'+row_index+'-'+col_index} className={'cell shape shape-'+cell_val} />
+                                            return <div key={'shapes-row-col-' + row_index + '-' + col_index} className={'cell shape shape-' + cell_val} />
                                         })
                                     }
                                 </div>
@@ -160,18 +160,24 @@ const Calendar = () => {
                 </div>
             </div>
 
-            <div className='solution-count'>Solution Count: {solutions.length}</div>
+            <div className='controls'>
+                <h2>Controls</h2>
+                <div className='solution-count'>Solution Count: {solutions.length}</div>
 
-            <div className='solution-selection'>
-                <div className='solution-label'>Solution:</div>
-                <Dropdown label='solution' values={solutionMap} setState={setSolutionIndex} />
-            </div>
+                <div className='solution-selection'>
+                    <div className='solution-label'>Solution:</div>
+                    <Dropdown label='solution' values={solutionMap} setState={setSolutionIndex} />
+                </div>
 
-            <div className='month-day-selection'>
-                <Dropdown label='month' values={MONTH_MAP} setState={setMonth} />
-                <Dropdown label='day' values={DAY_MAP} setState={setDay} />
+                <div className='month-day-selection'>
+                    <div className='month-day-label'>Select Month and Day:</div>
+                    <div className='month-day-dropdowns'>
+                        <Dropdown label='month' values={MONTH_MAP} setState={setMonth} />
+                        <Dropdown label='day' values={DAY_MAP} setState={setDay} />
+                    </div>
+                </div>
             </div>
-        </>
+        </div>
     )
 }
 
