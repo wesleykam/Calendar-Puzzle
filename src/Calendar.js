@@ -115,13 +115,14 @@ const Calendar = () => {
 
         const [row_start, col_start] = findNextBlank(month_day_calendar)
         findSolutions(new_solutions, month_day_calendar, SHAPES, row_start, col_start)
-
-        console.log(new_solutions)
-
+        
         return new_solutions
     }, [month, day]);
 
     const solutionMap = useMemo(() => {
+
+        document.getElementById('selected-solution').value = 0;
+
         const solMap = new Map();
 
         for(var i=0; i<solutions.length; i++) {
@@ -186,13 +187,16 @@ const Calendar = () => {
                 </div>
             </div>
 
+            <div className='solution-count'>Solution Count: {solutions.length}</div>
+
             <div className='solution-selection'>
-                <Dropdown values={solutionMap} setState={setSolutionIndex} />
+                <div className='solution-label'>Solution:</div>
+                <Dropdown label='solution' values={solutionMap} setState={setSolutionIndex} />
             </div>
 
             <div className='month-day-selection'>
-                <Dropdown values={MONTH_MAP} setState={setMonth} />
-                <Dropdown values={DAY_MAP} setState={setDay} />
+                <Dropdown label='month' values={MONTH_MAP} setState={setMonth} />
+                <Dropdown label='day' values={DAY_MAP} setState={setDay} />
             </div>
         </>
     )

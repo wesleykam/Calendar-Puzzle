@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Dropdown = ({ values, setState }) => {
+const Dropdown = ({ label, values, setState }) => {
 
 
     const handleOnChange = (e) => {
@@ -8,8 +8,8 @@ const Dropdown = ({ values, setState }) => {
     }
 
     return (
-        <div className='months dropdown'>
-            <select onChange={handleOnChange}>
+        <div id={label} className='dropdown'>
+            <select id={'selected-'+label} onChange={handleOnChange}>
                 {
                     Array.from(values.entries()).map((sets, index) => {
                         return <option key={index}

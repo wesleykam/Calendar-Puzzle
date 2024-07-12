@@ -8,7 +8,8 @@
   align-items: center;
   justify-content: center;
 
-  gap: 50px;
+  font-size: 18px;
+  gap: 40px;
 }
 
 .cell {
@@ -93,7 +94,22 @@
 
 /* #endregion SHAPE-GRID */
 
-/* #region DROP-DOWN */
+
+/* #region SOLUTION-SELECTION */
+
+.solution-selection {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+
+/* #endregion SOLUTION-SELECTION */
+
+
+/* #region MONTH-DAY-SELECTION */
 
 .month-day-selection {
   display: flex;
@@ -105,6 +121,5 @@
   font-size: 15px;
 }
 
-/* #endregion */
-
+/* #endregion MONTH-DAY-SELECTION */
 
