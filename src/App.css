@@ -52,6 +52,10 @@
   position: absolute;
 }
 
+.cell.shape {
+  transition: all .5s ease-in-out;
+}
+
 /* #region SHAPES */
 .shape-1 {
   background-color: rgb(255, 219, 153);
@@ -83,10 +87,6 @@
 
 .shape-8 {
   background-color: rgb(113, 108, 255);
-}
-/* testing date calculation */
-.shape-9 {
-  background-color: beige;
 }
 
 /* #endregion SHAPES */

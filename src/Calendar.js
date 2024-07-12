@@ -176,7 +176,7 @@ const Calendar = () => {
                                 return <div key={'shapes-row-' + row_index} className='row'>
                                     {
                                         row.map((cell_val, col_index) => {
-                                            return <div key={'shapes-row-col-'+row_index+'-'+col_index} className={'cell shape shape-' + cell_val} />
+                                            return <div key={'shapes-row-col-'+row_index+'-'+col_index} className={'cell shape shape-'+cell_val} />
                                         })
                                     }
                                 </div>
