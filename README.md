@@ -13,8 +13,8 @@ Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
 Select a month and day
 
-Place all the blocks into the gride without cover the selected month and day
+Place all the blocks into the grid without covering the selected month and day
 
-This applications displays all possible solutions to the combinations
+This application displays all possible solutions to each month-day combination
 
 Goodluck!
