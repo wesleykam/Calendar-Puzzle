@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useMemo, useState } from 'react'
 
 import Dropdown from './components/Dropdown'
 import { findSolutions, findNextBlank, SHAPES } from './Algorithm'
@@ -67,7 +67,6 @@ const Calendar = () => {
     const [day, setDay] = useState(0);
     const [solutionIndex, setSolutionIndex] = useState(0);
 
-
     // Block out the selected month and days for shapes to avoid
     const modify_date_position = (month, day) => {
 
@@ -94,17 +93,19 @@ const Calendar = () => {
         return BLANK_GRID
     }
 
-    const month_day_calendar = modify_date_position(month, day);
-
     // Generate solutions only when month and day change
     const solutions = useMemo(() => {
+        const month_day_calendar = modify_date_position(month, day);
+
         const new_solutions = []
 
         const [row_start, col_start] = findNextBlank(month_day_calendar)
         findSolutions(new_solutions, month_day_calendar, SHAPES, row_start, col_start)
 
         return new_solutions
-    }, [month_day_calendar]);
+    }, [month, day]);
+
+
 
     // Generate new solution map when day and month change (new solutions are generated)
     const solutionMap = useMemo(() => {
@@ -119,14 +120,25 @@ const Calendar = () => {
 
     }, [solutions.length])
 
-    useEffect(() => {
-        // Reset value in solution index drop-down
-        document.getElementById('selected-solution').value = 0;
-        // console.log(document.getElementById('selected-solution'))
-    }, [day, month])
-
     return (
         <div className='calendar-game'>
+            <div className='controls'>
+                <h2>Controls</h2>
+                <div className='solution-count'>Solution Count: {solutions.length}</div>
+
+                <div className='solution-selection'>
+                    <div className='solution-label'>Solution:</div>
+                    <Dropdown label='solution' values={solutionMap} setState={setSolutionIndex} />
+                </div>
+
+                <div className='month-day-selection'>
+                    <div className='month-day-label'>Select Month and Day:</div>
+                    <div className='month-day-dropdowns'>
+                        <Dropdown label='month' values={MONTH_MAP} setState={setMonth} setSolutionIndex={setSolutionIndex} />
+                        <Dropdown label='day' values={DAY_MAP} setState={setDay} setSolutionIndex={setSolutionIndex}/>
+                    </div>
+                </div>
+            </div>
             <div className='calendar-container'>
                 <div className='calendar-grid'>
                     {
@@ -156,24 +168,6 @@ const Calendar = () => {
                                 </div>
                             })
                         }
-                    </div>
-                </div>
-            </div>
-
-            <div className='controls'>
-                <h2>Controls</h2>
-                <div className='solution-count'>Solution Count: {solutions.length}</div>
-
-                <div className='solution-selection'>
-                    <div className='solution-label'>Solution:</div>
-                    <Dropdown label='solution' values={solutionMap} setState={setSolutionIndex} />
-                </div>
-
-                <div className='month-day-selection'>
-                    <div className='month-day-label'>Select Month and Day:</div>
-                    <div className='month-day-dropdowns'>
-                        <Dropdown label='month' values={MONTH_MAP} setState={setMonth} />
-                        <Dropdown label='day' values={DAY_MAP} setState={setDay} />
                     </div>
                 </div>
             </div>
